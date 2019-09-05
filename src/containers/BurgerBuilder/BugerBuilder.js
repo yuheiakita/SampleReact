@@ -24,7 +24,7 @@ class BugerBulider extends Component {
       cheese: 0,
       meat: 0,
     },
-    totalPraice: 4,
+    totalPrice: 4,
     purchasable: false,
     purchasing: false
   }
@@ -48,9 +48,9 @@ class BugerBulider extends Component {
     };
     updatedIngredients[type] = updatedCount;
     const priceAddition = INGREDIENT_PRICES[type]
-    const oldPrice = this.state.totalPraice;
+    const oldPrice = this.state.totalPrice;
     const newPrice = oldPrice + priceAddition;
-    this.setState({totalPraice: newPrice, ingredients: updatedIngredients});
+    this.setState({totalPrice: newPrice, ingredients: updatedIngredients});
     this.updatePurchaseState(updatedIngredients);
 
   }
@@ -66,14 +66,22 @@ class BugerBulider extends Component {
     };
     updatedIngredients[type] = updatedCount;
     const priceDeduction = INGREDIENT_PRICES[type]
-    const oldPrice = this.state.totalPraice;
+    const oldPrice = this.state.totalPrice;
     const newPrice = oldPrice - priceDeduction;
-    this.setState({totalPraice: newPrice, ingredients: updatedIngredients});
+    this.setState({totalPrice: newPrice, ingredients: updatedIngredients});
     this.updatePurchaseState(updatedIngredients);
   }
 
   purchaseHandler = () => {
     this.setState({purchasing: true});
+  }
+
+  purchaseCancelHandler = () => {
+    this.setState({purchasing: false});
+  }
+
+  purchaseContinueHandler = () => {
+    alert('You continue!');
   }
 
   render() {
@@ -85,8 +93,12 @@ class BugerBulider extends Component {
     }
     return (
       <Aux>
-        <Modal show={this.state.purchasing}>
-          <OrderSummary ingredients={this.state.ingredients}/>
+        <Modal show={this.state.purchasing} modalClosed={this.purchaseCancelHandler}>
+          <OrderSummary 
+          ingredients={this.state.ingredients}
+          price={this.state.totalPrice}
+          purchaseCannceled={this.purchaseCancelHandler}
+          purchaseCoutinued={this.purchaseContinueHandler}/>
         </Modal>
         <Burger ingredients={this.state.ingredients}/>
         <BuildControls 
@@ -95,7 +107,7 @@ class BugerBulider extends Component {
           disabled={disabledInfo}
           purchasable={this.state.purchasable}
           odered={this.purchaseHandler}
-          price={this.state.totalPraice}/>
+          price={this.state.totalPrice}/>
       </Aux>
     );
   }
