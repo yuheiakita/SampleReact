@@ -52,7 +52,6 @@ class BugerBulider extends Component {
     const newPrice = oldPrice + priceAddition;
     this.setState({totalPrice: newPrice, ingredients: updatedIngredients});
     this.updatePurchaseState(updatedIngredients);
-
   }
 
   removeIngredientHandler = (type) => {
